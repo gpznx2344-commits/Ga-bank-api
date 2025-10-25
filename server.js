@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 3000;
 const DB_FILE = path.join(__dirname, 'db.json');
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: '*' // permite que qualquer site (incluindo Netlify) acesse a API
+}));
 app.use(bodyParser.json());
 
 // Função para ler o banco
@@ -35,25 +37,38 @@ app.get('/', (req, res) => {
     res.send('GA Bank API funcionando!');
 });
 
-// Pegar contas
+// Pegar todas as contas
 app.get('/contas', async (req, res) => {
     const db = await readDB();
     res.json(db.contas);
 });
 
-// Criar conta
-app.post('/conta', async (req, res) => {
-    const { nome, email, senha, saldo = 0 } = req.body;
-    if (!nome || !email || !senha) return res.status(400).json({ erro: 'Campos faltando' });
+// Criar conta (ajustado para front Netlify)
+app.post('/contas', async (req, res) => {
+    const { nome, email, senha, cpf } = req.body;
+    if (!nome || !email || !senha || !cpf) {
+        return res.status(400).json({ message: 'Campos faltando' });
+    }
 
     const db = await readDB();
-    const existe = db.contas.find(c => c.email === email);
-    if (existe) return res.status(400).json({ erro: 'Conta já existe' });
+    const existe = db.contas.find(c => c.email === email || c.cpf === cpf);
+    if (existe) {
+        return res.status(400).json({ message: 'Conta já existe' });
+    }
 
-    const novaConta = { id: Date.now(), nome, email, senha, saldo };
+    const novaConta = {
+        id: Date.now(),
+        nome,
+        email,
+        senha,
+        cpf,
+        saldo: 0,
+        chavePix: null // adiciona campo padrão pra PIX
+    };
+
     db.contas.push(novaConta);
     await writeDB(db);
-    res.json(novaConta);
+    res.status(201).json(novaConta);
 });
 
 // Transferência (PIX entre contas)
