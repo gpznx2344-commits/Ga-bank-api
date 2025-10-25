@@ -1,19 +1,13 @@
 {
-  "name": "ga-bank-api",
+  "name": "gabank-api",
   "version": "1.0.0",
-  "description": "API do GA Bank para gerenciar contas, saldo e PIX",
+  "description": "API simples para GA Bank",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
-  "author": "Seu Nome",
-  "license": "ISC",
   "dependencies": {
-    "colors": "^1.4.0",
-    "console-title": "^1.1.0",
-    "discord.js": "^12.5.2",
-    "sync-request": "^6.1.0",
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "body-parser": "^1.20.2",
