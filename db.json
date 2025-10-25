@@ -1,14 +1,4 @@
 {
-  "accounts": [
-    {
-      "id": "1",
-      "nome": "Usuário Teste",
-      "email": "teste@exemplo.com",
-      "cpf": "00000000000",
-      "saldo": 5000,
-      "senha": "1234",
-      "chavePix": {"tipo":"email","valor":"teste@exemplo.com"}
-    }
-  ],
+  "contas": [],
   "pixTransactions": []
 }
